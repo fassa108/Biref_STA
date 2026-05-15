@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+    
+    <h2>Modifier le Journal</h2>
+
+    <form method="POST" action="{% url 'modifier_entree' object.pk%}">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="submit">Modifier</button>
+    </form>
+{% endblock content %}
+    

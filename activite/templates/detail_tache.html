@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div> <img src="{{ entree.image_de_preuve.url }}" alt="image">
+    <h3> {{entree.titre}} </h3>
+    <p> {{entree.contenu_textuel}} </p>
+    <small> {{entree.date_creation}} </small>
+    <a href="{% url 'modifier_entree' entree.pk %}">Modifier</a>
+    <a href="">Supprimer</a>
+
+    </div>
+{% endblock content %}
+    

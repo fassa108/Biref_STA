@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+    <h3>Creation de Journal</h3>    
+
+    <form action="creer_entree" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="submit">Creer</button>
+    </form>
+
+{% endblock content %}
+    
