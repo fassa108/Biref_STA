@@ -2,18 +2,57 @@
 
 
 {% block content %}
-    <h2>Liste des Journaux</h2>
-    <a href="{% url 'creer_entree' %}">Ajouter Un Journal</a>
-
+<div class="container-fluid bg-white">
     
-    {% for entree in entrees %}
-        <div>
-        <h3> {{entree.titre}} </h3>
-        <p> {{entree.contenu_textuel|truncatechars:10 }} </p>
-        <small> {{entree.date_creation}} </small><span> {{entree.etat}} </span>
-        <a href="{% url 'detail_entree' entree.pk %}">Voir les details</a>
+    <div class="d-flex flex-row justify-content-between align-items-start mx-4 p-1">
+        <h2>Liste des Journaux</h2>
+        
+        <button class="btn btn-success">
+            <a href="{% url 'creer_entree' %}" class="text-decoration-none text-white"> + Ajouter Un Journal</a>
+        </button>
+        
     </div>
-    {% endfor %}
+    <form method="get" class="row g-2 mb-2 mx-4 justify-content-between">
+        <div class="col-8 d-flex justify-content-between">
+            <div >
+                <select name="statut" class="form-select px-5">
+                    <option value="">Tous les statuts</option>
+                    {% for valeur, label in statut_choices %}
+                        <option value="{{ valeur }}" {% if statut_actif == valeur %}selected{% endif %}>
+                            {{ label }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div >
+                <select name="categorie" class="form-select px-5">
+                    <option value="">Toutes les catégories</option>
+                    {% for cat in categories %}
+                        <option value="{{ cat.id }}" {% if categorie_active == cat.id|stringformat:"s" %}selected{% endif %}>
+                            {{ cat.nom_categorie }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+        <button type="submit" class="btn btn-primary">Filtrer</button>
+        </div>
+        <div class="col-auto ">
+            <a href="{% url 'entree' %}" class="btn btn-outline-secondary">Réinitialiser</a>
+        </div>
+    </form>
+    <div class="row d-flex justify-content-between ps-2 ms-2 pt-4  container-fluid ">
+        {% for entree in entrees %}
+            <div class="col-4 m-2 rounded-4 shadow d-flex flex-column ">
+                <h4> {{entree.titre|truncatechars:25}} </h4>
+                <p> {{entree.contenu_textuel|truncatechars:50 }} </p>
+                <small> {{entree.date_creation}} </small>
+                <span class="badge"> {{entree.etat}} </span>
+                <span class="badge"> {{entree.categorie}} </span>
+                <a href="{% url 'detail_entree' entree.pk %}">Voir les details</a>
+            </div>
+        {% endfor %}
+    </div>
+    
     {% if is_paginated %}
         <nav>
             <ul class="pagination justify-content-center">
@@ -38,7 +77,8 @@
 
             </ul>
         </nav>
-    {% endif %}  
+    {% endif %} 
+</div> 
 
 {% endblock content %}
     

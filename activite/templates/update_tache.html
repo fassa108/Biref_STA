@@ -1,15 +1,101 @@
 {% extends 'base.html' %}
-
-
-
 {% block content %}
-    
-    <h2>Modifier le Journal</h2>
 
-    <form method="POST" action="{% url 'modifier_entree' object.pk%}">
-        {% csrf_token %}
-        {{form.as_p}}
-        <button type="submit">Modifier</button>
-    </form>
+<div class="container py-4">
+    <a href="{% url 'detail_entree' object.pk%}" class="btn btn-outline-secondary mb-4 position-fixed">
+        ← Retour au journal
+    </a>
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <div class="card shadow border-0 rounded-4">
+                <div class="card-body p-5">
+
+                    <h3 class="mb-4">Modifier le Journal</h3>
+
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        
+                        <div class="mb-2">
+                            <label class="form-label fw-semibold">Titre</label>
+                            {{ form.titre.errors }}
+                            <input type="text"
+                                   name="titre"
+                                   class="form-control"
+                                   value="{{ form.titre.value|default:'' }}">
+                        </div>
+
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Contenu</label>
+                            {{ form.contenu_textuel.errors }}
+                            <textarea name="contenu_textuel"
+                                      class="form-control"
+                                      rows="5">{{ form.contenu_textuel.value|default:'' }}</textarea>
+                        </div>
+
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Catégorie</label>
+                            {{ form.categorie.errors }}
+                            <select name="categorie" class="form-select">
+                                {% for choice in form.categorie.field.queryset %}
+                                    <option value="{{ choice.pk }}"
+                                        {% if form.categorie.value == choice.pk|stringformat:"s" %}selected{% endif %}>
+                                        {{ choice.nom_categorie }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Image de preuve</label>
+                            {{ form.image_de_preuve.errors }}
+                            {% if object.image_de_preuve %}
+                                <div class="mb-2">
+                                    <img src="{{ object.image_de_preuve.url }}"
+                                         class="img-fluid rounded"
+                                         style="max-height: 150px; object-fit: cover;"
+                                         alt="Image actuelle">
+                                    <small class="text-muted d-block mt-1">Image actuelle — remplace la en uploadant une nouvelle</small>
+                                </div>
+                            {% endif %}
+                            <input type="file"
+                                   name="image_de_preuve"
+                                   class="form-control"
+                                   accept="image/*">
+                        </div>
+
+                        
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Statut</label>
+                            {{ form.etat.errors }}
+                            <select name="etat" class="form-select">
+                                {% for valeur, label in form.etat.field.choices %}
+                                    <option value="{{ valeur }}"
+                                        {% if form.etat.value == valeur %}selected{% endif %}>
+                                        {{ label }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-success flex-fill">
+                                Modifier
+                            </button>
+                            <a href="{% url 'entree' %}" class="btn btn-outline-secondary flex-fill">
+                                Annuler
+                            </a>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock content %}
-    

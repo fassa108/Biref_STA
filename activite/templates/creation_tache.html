@@ -1,15 +1,81 @@
 {% extends 'base.html' %}
-
-
-
 {% block content %}
-    <h3>Creation de Journal</h3>    
 
-    <form action="creer_entree" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{form.as_p}}
-        <button type="submit">Creer</button>
-    </form>
+<div class="container py-4">
+    <a href="{% url 'entree' %}" class="btn btn-outline-secondary mb-4 position-fixed">
+        ← Retour à la liste
+    </a>
+    <div class="row justify-content-center">
+        
+        <div class="col-md-7">
+
+            <div class="card shadow border-0 rounded-4">
+                <div class="card-body p-5">
+
+                    <h3 class="mb-4">Création de Journal</h3>
+
+                    <form action="creer_entree" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                       
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Titre</label>
+                            {{ form.titre.errors }}
+                            <input type="text"
+                                   name="titre"
+                                   class="form-control"
+                                   placeholder="Titre du journal"
+                                   value="{{ form.titre.value|default:'' }}">
+                        </div>
+
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Contenu</label>
+                            {{ form.contenu_textuel.errors }}
+                            <textarea name="contenu_textuel"
+                                      class="form-control"
+                                      rows="5"
+                                      placeholder="Décris ton activité, le problème rencontré...">{{ form.contenu_textuel.value|default:'' }}</textarea>
+                        </div>
+
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Catégorie</label>
+                            {{ form.categorie.errors }}
+                            <select name="categorie" class="form-select">
+                                {% for choice in form.categorie.field.queryset %}
+                                    <option value="{{ choice.pk }}">{{ choice.nom_categorie }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Image de preuve</label>
+                            {{ form.image_de_preuve.errors }}
+                            <input type="file"
+                                   name="image_de_preuve"
+                                   class="form-control"
+                                   accept="image/*">
+                            <small class="text-muted">Capture d'écran, photo, etc.</small>
+                        </div>
+
+                        
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-success flex-fill">
+                                Créer
+                            </button>
+                            <a href="{% url 'entree' %}" class="btn btn-outline-secondary flex-fill">
+                                Annuler
+                            </a>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 {% endblock content %}
-    

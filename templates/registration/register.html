@@ -3,11 +3,75 @@
 
 {% block content %}
     
-    <form method="POST">
-        {% csrf_token %}
-        {{form.as_p}}
-        <button type="submit">M'inscrire</button>
-    </form>
 
-{% endblock content %}
     
+
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <div class="card shadow-sm border-0 rounded-4">
+                    <div class="card-body p-5">
+
+                        <h3 class="mb-1">Créer un compte</h3>
+                        <p class="text-muted mb-4">Rejoins l'équipe STA</p>
+
+                        <form method="POST">
+                            {% csrf_token %}
+
+                            
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Nom d'utilisateur</label>
+                                {{ form.username.errors }}
+                                <input type="text"
+                                    name="username"
+                                    class="form-control"
+                                    placeholder="ex: aissatou"
+                                    value="{{ form.username.value|default:'' }}">
+                            </div>
+
+                            
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Email</label>
+                                {{ form.email.errors }}
+                                <input type="email"
+                                    name="email"
+                                    class="form-control"
+                                    placeholder="ex: exemple@email.com"
+                                    value="{{ form.email.value|default:'' }}">
+                            </div>
+
+                            
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Mot de passe</label>
+                                {{ form.password1.errors }}
+                                <input type="password"
+                                    name="password1"
+                                    class="form-control"
+                                    placeholder="••••••••">
+                            </div>
+
+                            
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold">Confirmer le mot de passe</label>
+                                {{ form.password2.errors }}
+                                <input type="password"
+                                    name="password2"
+                                    class="form-control"
+                                    placeholder="••••••••">
+                            </div>
+
+                            <button type="submit" class="btn btn-success w-100">
+                                Créer
+                            </button>
+
+                            
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+       
+{% endblock content %}
